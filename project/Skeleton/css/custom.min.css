@@ -1,0 +1,8 @@
+html,body{height:100%;background:#1e88a8}a,button,p,span{font-family:"Hiragino Sans GB","Helvetica Neue",Helvetica,'Microsoft YaHei',sans-serif;-webkit-font-smoothing:antialiased}
+.container{min-width:100%}.cover{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;opacity:.7;z-index:103}.wechat-tips{position:fixed;top:10px;right:0;width:100%;text-align:right;z-index:103;padding-top:14px;box-sizing:border-box}
+.wechat-tips span{text-align:left;vertical-align:middle;font-size:16px;color:#fff;margin-right:10px;font-weight:700;line-height:30px;display:inline-block}
+.wechat-tips img{width:50px;display:inline-block;vertical-align:middle;margin-bottom:13px;margin-right:10px}.content-wrapper{display:table;text-align:center;height:100%;width:100%;min-height:400px;min-width:250px;box-sizing:border-box}
+.content{display:table-cell;vertical-align:middle;color:#fff;position:relative}.content p{margin:0;padding:0}.logo span{width:150px;height:150px;background:url("../images/logo.png");display:inline-block;background-size:100%}
+.update-info{padding:0 10px}.update-info span{font-size:1.3rem}.content .title{font-size:2.5rem;padding-top:20px;margin:0}.download-container{margin-top:50px}
+#download{width:220px;color:#fff;font-size:1.6rem}.footer{height:40px;text-align:center;line-height:40px}.footer a{text-decoration:none}.hide{display:none}
+@media(min-width:400px){.wechat-tips span{margin-right:15px}.wechat-tips img{margin-right:20px}}

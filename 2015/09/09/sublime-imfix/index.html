@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          解决Sublime-text 2在ubuntu 14.04 X64 下中文输入问题 - Kaijun的博客 | Kaijun&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://natumsol.github.io/2015/09/09/sublime-imfix/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Natumsol</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Ubuntu" title="Ubuntu">Ubuntu</a>
+                        
+                          <a class="tag" href="/tags/#Sublime Text2" title="Sublime Text2">Sublime Text2</a>
+                        
+                    </div>
+                    <h1>解决Sublime-text 2在ubuntu 14.04 X64 下中文输入问题</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Natumsol on
+                        2015-09-09
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <p>最近把实验室的工作环境换为Ubuntu 14.04（嘘！），配置<code>Ubuntu</code>真是一件苦逼的事，虽说这种事我白做不厌（嗯，不能告诉别人这是我的逗比属性之一）。<code>Sublime-text 2</code>一直是我最钟爱的编辑器，不过这货对中文支持似乎不太又好惹，不仅没有官方的中文版本，而且对中文输入法的支持也很烂惹。好吧，今天我就作死吐槽下：</p>
+<ul>
+<li>在<code>Windows</code>下输入中文输入框无法更随光标，这个bug好解决，直接安装<code>IMESupport</code>就可以fix了；</li>
+<li>在<code>Ubuntu</code>下是直接不能输入中文（天啦撸，不能搞种族歧视啊，sublime君）。。</li>
+</ul>
+<p>作为一个潮码农，经常会升级系统，重装系统，为了防止每次都<code>Google</code>一下（话说阅兵后<code>Google</code>香港可以正常访问了，难道是回光返照？），这就是我写这篇文章的意图（什么？为什么不用印象笔记呢？ 这位兄台，咳咳，有句古话说得好：阻人装逼如杀人父母…）<br><a id="more"></a><br>具体解决方法为：</p>
+<h1 id="保存下述代码为-sublime-imfix-c-文件"><a href="#保存下述代码为-sublime-imfix-c-文件" class="headerlink" title="保存下述代码为 sublime-imfix.c 文件"></a>保存下述代码为 sublime-imfix.c 文件</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// sublime-imfix.c</span></div><div class="line"><span class="comment">// Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.</span></div><div class="line"><span class="comment">// By Cjacker Huang &lt;jianzhong.huang at i-soft.com.cn&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// gcc -shared -o libsublime-imfix.so sublime_imfix.c  `pkg-config --libs --cflags gtk+-2.0` -fPIC</span></div><div class="line"><span class="comment">// LD_PRELOAD=./libsublime-imfix.so sublime_text</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtk/gtk.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gdk/gdkx.h&gt;</span></span></div><div class="line"><span class="keyword">typedef</span> GdkSegment GdkRegionBox;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> <span class="number">_</span>GdkRegion</div><div class="line">&#123;</div><div class="line">  <span class="keyword">long</span> size;</div><div class="line">  <span class="keyword">long</span> numRects;</div><div class="line">  GdkRegionBox *rects;</div><div class="line">  GdkRegionBox extents;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">GtkIMContext *local_context;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">gdk_region_get_clipbox</span> <span class="params">(<span class="keyword">const</span> GdkRegion *region,</span></span></div><div class="line">            GdkRectangle    *rectangle)</div><div class="line">&#123;</div><div class="line">  g_return_if_fail (region != <span class="literal">NULL</span>);</div><div class="line">  g_return_if_fail (rectangle != <span class="literal">NULL</span>);</div><div class="line"></div><div class="line">  rectangle-&gt;x = region-&gt;extents.x1;</div><div class="line">  rectangle-&gt;y = region-&gt;extents.y1;</div><div class="line">  rectangle-&gt;width = region-&gt;extents.x2 - region-&gt;extents.x1;</div><div class="line">  rectangle-&gt;height = region-&gt;extents.y2 - region-&gt;extents.y1;</div><div class="line">  GdkRectangle rect;</div><div class="line">  rect.x = rectangle-&gt;x;</div><div class="line">  rect.y = rectangle-&gt;y;</div><div class="line">  rect.width = <span class="number">0</span>;</div><div class="line">  rect.height = rectangle-&gt;height;</div><div class="line">  <span class="comment">//The caret width is 2;</span></div><div class="line">  <span class="comment">//Maybe sometimes we will make a mistake, but for most of the time, it should be the caret.</span></div><div class="line">  <span class="keyword">if</span>(rectangle-&gt;width == <span class="number">2</span> &amp;&amp; GTK_IS_IM_CONTEXT(local_context)) &#123;</div><div class="line">        gtk_im_context_set_cursor_location(local_context, rectangle);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//this is needed, for example, if you input something in file dialog and return back the edit area</span></div><div class="line"><span class="comment">//context will lost, so here we set it again.</span></div><div class="line"><span class="function"><span class="keyword">static</span> GdkFilterReturn <span class="title">event_filter</span> <span class="params">(GdkXEvent *xevent, GdkEvent *event, gpointer im_context)</span></span></div><div class="line">&#123;</div><div class="line">    XEvent *xev = (XEvent *)xevent;</div><div class="line">    <span class="keyword">if</span>(xev-&gt;type == KeyRelease &amp;&amp; GTK_IS_IM_CONTEXT(im_context)) &#123;</div><div class="line">       GdkWindow * win = g_object_get_data(G_OBJECT(im_context),<span class="string">"window"</span>);</div><div class="line">       <span class="keyword">if</span>(GDK_IS_WINDOW(win))</div><div class="line">         gtk_im_context_set_client_window(im_context, win);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> GDK_FILTER_CONTINUE;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">gtk_im_context_set_client_window</span> <span class="params">(GtkIMContext *context, GdkWindow *window)</span></span></div><div class="line">&#123;</div><div class="line">  GtkIMContextClass *klass;</div><div class="line">  g_return_if_fail (GTK_IS_IM_CONTEXT (context));</div><div class="line">  klass = GTK_IM_CONTEXT_GET_CLASS (context);</div><div class="line">  <span class="keyword">if</span> (klass-&gt;set_client_window)</div><div class="line">    klass-&gt;set_client_window (context, window);</div><div class="line"></div><div class="line">  <span class="keyword">if</span>(!GDK_IS_WINDOW (window))</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  g_object_set_data(G_OBJECT(context),<span class="string">"window"</span>,window);</div><div class="line">  <span class="keyword">int</span> width = gdk_window_get_width(window);</div><div class="line">  <span class="keyword">int</span> height = gdk_window_get_height(window);</div><div class="line">  <span class="keyword">if</span>(width != <span class="number">0</span> &amp;&amp; height !=<span class="number">0</span>) &#123;</div><div class="line">    gtk_im_context_focus_in(context);</div><div class="line">    local_context = context;</div><div class="line">  &#125;</div><div class="line">  gdk_window_add_filter (window, event_filter, context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="安装C-C-的编译环境和gtk-libgtk2-0-dev"><a href="#安装C-C-的编译环境和gtk-libgtk2-0-dev" class="headerlink" title="安装C/C++的编译环境和gtk libgtk2.0-dev"></a>安装C/C++的编译环境和gtk libgtk2.0-dev</h2><pre><code><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install build-essential</div><div class="line">sudo apt-get install libgtk2.0-dev</div></pre></td></tr></table></figure>
+</code></pre><h2 id="编译共享内库"><a href="#编译共享内库" class="headerlink" title="编译共享内库"></a>编译共享内库</h2><pre><code><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -shared -o libsublime-imfix.so sublime-imfix.c  `pkg-config --libs --cflags gtk+-2.0` <span class="_">-f</span>PIC</div></pre></td></tr></table></figure>
+</code></pre><h2 id="修改Sublime-text-2启动参数"><a href="#修改Sublime-text-2启动参数" class="headerlink" title="修改Sublime-text 2启动参数"></a>修改Sublime-text 2启动参数</h2><h3 id="就编译好的libsublime-imfix-so文件移动到-usr-lib-目录下"><a href="#就编译好的libsublime-imfix-so文件移动到-usr-lib-目录下" class="headerlink" title="就编译好的libsublime-imfix.so文件移动到/usr/lib 目录下"></a>就编译好的<code>libsublime-imfix.so</code>文件移动到<code>/usr/lib</code> 目录下</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mv libsublime-imfix.so /usr/lib</div></pre></td></tr></table></figure>
+<h3 id="修改sublime-text-2-desktop"><a href="#修改sublime-text-2-desktop" class="headerlink" title="修改sublime-text-2.desktop"></a>修改sublime-text-2.desktop</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/share/applications</div><div class="line">sudo vim sublime-text-2.desktop</div></pre></td></tr></table></figure>
+<p>打开sublime-text-2.desktop后，将<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=/usr/bin/subl %F</div></pre></td></tr></table></figure></p>
+<p>修改为<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=bash -c <span class="string">'LD_PRELOAD=/usr/lib/libsublime-imfix.so /usr/bin/subl'</span> %F</div></pre></td></tr></table></figure></p>
+<p>将<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=/usr/bin/subl</div></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=bash -c <span class="string">'LD_PRELOAD=/usr/lib/libsublime-imfix.so /usr/bin/subl'</span> -n</div></pre></td></tr></table></figure></p>
+<p>将<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=/usr/bin/subl --command new_file</div></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Exec=bash -c <span class="string">'LD_PRELOAD=/usr/lib/libsublime-imfix.so /usr/bin/subl'</span> --command new_file</div></pre></td></tr></table></figure></p>
+<h2 id="重新启动Sublime-text-2，-enjoy"><a href="#重新启动Sublime-text-2，-enjoy" class="headerlink" title="重新启动Sublime-text 2， enjoy~"></a>重新启动Sublime-text 2， enjoy~</h2>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2015/10/12/make-poplayer-self-adaption/" data-toggle="tooltip" data-placement="top" title="解决artDialog弹出层嵌入的iframe大小无法自适应的问题">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2015/09/06/simple-ticketing-system/" data-toggle="tooltip" data-placement="top" title="简单的火车票售票系统">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Ubuntu" title="Ubuntu">Ubuntu</a>
+                        
+                          <a class="tag" href="/tags/#Sublime Text2" title="Sublime Text2">Sublime Text2</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Natumsol";
+    var disqus_identifier = "http://natumsol.github.io/2015/09/09/sublime-imfix/";
+    var disqus_url = "http://natumsol.github.io/2015/09/09/sublime-imfix/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/whutqinglan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Natumsol 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://natumsol.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

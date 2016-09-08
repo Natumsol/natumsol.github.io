@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          火星计算器JavaScript实现 - Kaijun的博客 | Kaijun&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://natumsol.github.io/2015/09/01/mars-calculator/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Natumsol</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
+                        
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                    </div>
+                    <h1>火星计算器JavaScript实现</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Natumsol on
+                        2015-09-01
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <p>最近师兄忙着刷算法题，我呢耳濡目染之下也跟着凑热闹，哈哈。虽然牺牲了不少玩的时间，就当为明年找实习做准备咯。</p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>自定义运算符 <code>@,#,$,&amp;,</code>并且优先级<code>@ &gt; # &gt; $ &gt; &amp;</code>,利用下面的计算法则，计算出一个给定的字符串表示的表达式的值，返回整型结果。<br>x@y = (x-1)*(y+1);<br>x#y = (2*x+5)*(3*y+60)<br>x$y = (x+1)*(2*x+3)*(y-1)*(2*y-3)<br>x&amp;y = ((x+y+1)*(y-9)+(x+7)/(y-8))<br>输入：接受多行输入，每行可能有空格。题目保证不会出现除数为0的情况，且所有操作数都是整数。为了简单起见，表达式不含有括号。<br>输出：对于每一行输入，输出一个运算结果。<br><figure class="highlight"><figcaption><span>输入样例：</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">1@2</div><div class="line">1#2</div><div class="line">1@1@1</div><div class="line">1#1#1</div><div class="line">1$1$1</div><div class="line">1&amp;1&amp;1</div><div class="line">1#1@1</div><div class="line">1@1#1</div><div class="line">1$1&amp;1</div><div class="line">1&amp;1$1</div><div class="line">1  #   1  &amp;       1</div><div class="line">12 @        12</div><div class="line">123    @   123</div></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><figcaption><span>输出样例:</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="number">0</span></div><div class="line"><span class="number">462</span></div><div class="line"><span class="number">-2</span></div><div class="line"><span class="number">55881</span></div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">186</span></div><div class="line"><span class="number">420</span></div><div class="line"><span class="number">315</span></div><div class="line"><span class="number">-17</span></div><div class="line"><span class="number">-19</span></div><div class="line"><span class="number">-3608</span></div><div class="line"><span class="number">143</span></div><div class="line"><span class="number">15128</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>拿到这个题目的第一感觉，就是要用逆波兰表达式做。毕竟处理这种四则运算最简单有效的方法就是利用逆波兰表达式进行解析计算，这样就免去了对原表达式进行复杂的语义分析。</p>
+<p>题目中定义的四个运算，其实就是新定义了一种运算规则，和我们熟知的四则运算并没有本质上的不同。这样解体思路就很明了了，简述如下：</p>
+<ol>
+<li>定义四种运算的优先级，在这里我们利用<code>javascript</code>里面的对象来完成：<br> <code>var operator = {&quot;@&quot;: 4,&quot;#&quot;: 3,&quot;$&quot;: 2,&quot;&amp;&quot;: 1} //定义运算符优先级</code></li>
+<li>根据运算符的优先级，对输入进行处理，生成逆波兰表达式。</li>
+<li>解析逆波兰表达式，并按照题目中定义的运算法则计算结果。</li>
+<li>输出。</li>
+</ol>
+<h1 id="细节处理"><a href="#细节处理" class="headerlink" title="细节处理"></a>细节处理</h1><p>解题思路清楚后，接下来就是代码实现了。这里有个细节需要注意：<br>怎么正确解析原表达式的数字和运算符？<br>对于输入“1222 @ 32432 &amp;3”这样的表达式用字符串函数处理的话是很繁琐的，需要考虑大量的情况，而且很可能考虑不全。我的做法是直接利用神器————正则表达式来匹配。这样不仅代码简介，而且可以保证不会出错。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//比如输入“1222 @ 32432 &amp;3”， 输出就为["1222", "@", "32432", "&amp;", "3"]</span></div><div class="line"><span class="keyword">var</span> input = str.replace(<span class="regexp">/\s/g</span>,<span class="string">""</span>).match(<span class="regexp">/(\d+)|(@|&amp;|\$|#)/g</span>)</div></pre></td></tr></table></figure></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 生成逆波兰表达式 */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toReversePolish</span>(<span class="params">str</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> input = str.replace(<span class="regexp">/\s/g</span>,<span class="string">""</span>).match(<span class="regexp">/(\d+)|(@|&amp;|\$|#)/g</span>)</div><div class="line">	<span class="keyword">var</span> operator = &#123;<span class="string">"@"</span>: <span class="number">4</span>,<span class="string">"#"</span>: <span class="number">3</span>,<span class="string">"$"</span>: <span class="number">2</span>,<span class="string">"&amp;"</span>: <span class="number">1</span>&#125; <span class="comment">//定义运算符优先级</span></div><div class="line">	<span class="keyword">var</span> stackTemp = []; <span class="comment">//运算符栈</span></div><div class="line">	<span class="keyword">var</span> output = []; <span class="comment">//输出</span></div><div class="line"></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; input.length; i++) &#123;</div><div class="line">		<span class="keyword">if</span> (<span class="built_in">Number</span>.isInteger(<span class="built_in">parseInt</span>(input[i]))) &#123; <span class="comment">//如果是数字，则直接输出</span></div><div class="line">			output.push(<span class="built_in">parseInt</span>(input[i]));</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">if</span> (stackTemp.length != <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">if</span> (operator[input[i]] &gt; operator[stackTemp[stackTemp.length - <span class="number">1</span>]]) &#123;<span class="comment">//当前运算符的优先级比栈定元素高，则当前运算符进栈</span></div><div class="line">					stackTemp.push(input[i]);</div><div class="line">				&#125; <span class="keyword">else</span> &#123;<span class="comment">//当前运算符的优先级不比栈定元素高，则栈定元素出栈，当前运算符进栈</span></div><div class="line">					output.push(stackTemp.pop());</div><div class="line">					stackTemp.push(input[i]);</div><div class="line">				&#125;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;<span class="comment">//如果运算符栈为空，则直接进栈</span></div><div class="line">				stackTemp.push(input[i]);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (stackTemp.length) &#123; <span class="comment">//处理栈中剩下的运算符</span></div><div class="line">		<span class="keyword">while</span> (stackTemp.length)</div><div class="line">			output.push(stackTemp.pop());</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> output;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 火星计算器 */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">marsCalculator</span>(<span class="params">str</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> str = toReversePolish(str);<span class="comment">//根据输入得到逆波兰表达式</span></div><div class="line">	<span class="keyword">var</span> result = [];<span class="comment">//结果栈</span></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; str.length; i++) &#123;</div><div class="line">		<span class="keyword">if</span> (<span class="built_in">Number</span>.isInteger(<span class="built_in">parseInt</span>(str[i]))) &#123;</div><div class="line">			result.push(str[i]);<span class="comment">//如果为数字，则直接进栈</span></div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">switch</span> (str[i]) &#123;<span class="comment">//如果是运算符，则按照运算规则计算</span></div><div class="line">				<span class="keyword">case</span> <span class="string">"@"</span>:</div><div class="line">					<span class="keyword">var</span> y = result.pop();</div><div class="line">					<span class="keyword">var</span> x = result.pop();</div><div class="line">					<span class="keyword">var</span> resultTemp = (x - <span class="number">1</span>) * (y + <span class="number">1</span>);</div><div class="line">					result.push(resultTemp);</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">				<span class="keyword">case</span> <span class="string">"#"</span>:</div><div class="line">					<span class="keyword">var</span> y = result.pop();</div><div class="line">					<span class="keyword">var</span> x = result.pop();</div><div class="line">					<span class="keyword">var</span> resultTemp = (<span class="number">2</span> * x + <span class="number">5</span>) * (<span class="number">3</span> * y + <span class="number">60</span>);</div><div class="line">					result.push(resultTemp);</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">				<span class="keyword">case</span> <span class="string">"$"</span>:</div><div class="line">					<span class="keyword">var</span> y = result.pop();</div><div class="line">					<span class="keyword">var</span> x = result.pop();</div><div class="line">					<span class="keyword">var</span> resultTemp = (x + <span class="number">1</span>) * (<span class="number">2</span> * x + <span class="number">3</span>) * (y - <span class="number">1</span>) * (<span class="number">2</span> * y - <span class="number">3</span>);</div><div class="line">					result.push(resultTemp);</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">				<span class="keyword">case</span> <span class="string">"&amp;"</span>:</div><div class="line">					<span class="keyword">var</span> y = result.pop();</div><div class="line">					<span class="keyword">var</span> x = result.pop();</div><div class="line">					<span class="keyword">var</span> resultTemp = (x + y + <span class="number">1</span>) * (y - <span class="number">9</span>)  +  (x + <span class="number">7</span>) / (y - <span class="number">8</span>);</div><div class="line">					result.push(resultTemp);</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> result[<span class="number">0</span>]; <span class="comment">// 返回结果</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p><img src="/images/blog/20150901/testResult.png" alt="测试结果"><br>经测试，程序满足题目要求。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2015/09/06/simple-ticketing-system/" data-toggle="tooltip" data-placement="top" title="简单的火车票售票系统">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2015/08/13/Validate-hidden-input-in-validation-enginen/" data-toggle="tooltip" data-placement="top" title="利用jQuery Validation Engine 校验隐藏元素">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
+                        
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Natumsol";
+    var disqus_identifier = "http://natumsol.github.io/2015/09/01/mars-calculator/";
+    var disqus_url = "http://natumsol.github.io/2015/09/01/mars-calculator/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/whutqinglan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Natumsol 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://natumsol.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

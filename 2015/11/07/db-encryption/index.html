@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          基于NodeJS和Mysql的数据库加密系统的设计与实现 - Kaijun的博客 | Kaijun&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://natumsol.github.io/2015/11/07/db-encryption/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Natumsol</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#NodeJs" title="NodeJs">NodeJs</a>
+                        
+                          <a class="tag" href="/tags/#Mysql" title="Mysql">Mysql</a>
+                        
+                          <a class="tag" href="/tags/#数据库加密" title="数据库加密">数据库加密</a>
+                        
+                    </div>
+                    <h1>基于NodeJS和Mysql的数据库加密系统的设计与实现</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Natumsol on
+                        2015-11-07
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>这纯粹是一场意外。</p>
+<p>研一选课的时候，按照培养计划上的说明，毕业之前，每人必须选修一门跨一级学科（什么鬼！！）的课程，然后我和实验室的其他三人一看就乐呵了，心想可以去文科班蹭课了（此处四人中某人发出了猥琐的笑声），然后就选了一门哲学课——《中国哲学之儒家哲学》。。等到考试成绩粗来的时候一看傻眼了——0分！跑到教务处一翻撕逼，原来我们上错课了（上成了《道家哲学》！！！）。</p>
+<p>最后费了好大劲把这件事解决之后，今年学弟们参照我们已选的课程时发现，我们上的哲学课竟然不是跨一级学科的课程！！知道真相的我眼泪掉下来，于是就补选了这门“坑爹”的课程——计算机学院的《数据库安全》。</p>
+<p>作为一只平时上课都不认真听的电信狗，被计算机学院学弟们碾压了，好有激情有木有！每次上课我们只有坐最后一排的份，每次老师提问学弟们都抢着答有木有！！因为一些私事，我逃掉了很多课（捂脸，逃，），眼看做Presentation的deadline马上就到了，而我题目还没选，于是硬着头皮选了一个坑爹的题目——数据库加密。</p>
+<h1 id="设计与实现"><a href="#设计与实现" class="headerlink" title="设计与实现"></a>设计与实现</h1><h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><ol>
+<li>不考虑密钥的管理技术 ， 表内所有数据 ( 每一行的每 个字段 ) 采用相同的密钥加密 ， 充分利用 DBMS 的管理能力；</li>
+<li>数据库加解密在客户端进行；</li>
+<li>要对字符串查询：LIKE 查询 ( 中英文 )进行测试，不要求做成通用程序，可以专门针对这两类查询设计处理程序； 至少应支持的查询模式: s%， %s， %s% 。</li>
+<li>全表查询后解密和直接密文查询后再精确查询进行性能对比。</li>
+</ol>
+<p><em>注意 : 只处理中文字符的加密，要求用多本金庸小说作为测试数据，以 50 个字为单位截断，加密后保存在数据</em><br><a id="more"></a></p>
+<h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><p>理论基础要详细说的话可以写一篇论文了，这里我粗略的介绍一下。</p>
+<p>首先，将待加密的字符串明文用一定的算法映射成一个信息矩阵，这个矩阵包含了这个字符串的所有信息，因为矩阵比较大（256*260），所以需要对其进行压缩与降维处理，转换为一个定长的比特串，这个比特串就作为能代表这个字符串的索引。查询的时候，如果待查询的字符串包含关键字，那么将关键字也转换为定长的比特串后，那么待查字符串索引 &amp;（位与） 关键字比特串 = 关键字比特串。</p>
+<h2 id="技术调研"><a href="#技术调研" class="headerlink" title="技术调研"></a>技术调研</h2><p>后端：作为一个前端狗，后台果断<code>NodeJS</code> + <code>Express</code>。</p>
+<p>数据库：数据库的话MongoDB在这里不适合（<code>MongoDB</code>为NoSQL，<br>不支持传统的SQL语句），所以选用比较常用的<code>Mysql</code>。</p>
+<p>环境：运行环境选用<code>Ubuntu 14.04 LTS</code>。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h3><p>我选用的小说为《天龙八部》，因为我主要是做中文的查询，为了简单起见，处理掉了小说中所有的非中文字符，包括英文字母，数字，标点符号等等。</p>
+<p>因为小说比较大，直接用文本编辑器批量查找替换会，文本编辑器会直接崩掉。这时候<code>awk</code>和<code>sed</code>等命令行工具就大显身手了，处理兆级的文本文件时间仅为毫秒级。<br>我处理《天龙八部》的命令为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;s/[，“”？。：》《……！； ’‘ ·（）()、-*.]//g&apos; data.txt | sed &apos;/^$/d&apos;  | tr -t &quot;\n&quot; &quot; &quot; data_1.txt</div></pre></td></tr></table></figure></p>
+<h3 id="数据入库"><a href="#数据入库" class="headerlink" title="数据入库"></a>数据入库</h3><p>我采取的方法比较笨，首先用<code>awk</code>生成<code>sql</code>语句，然后利用DBMS进行入库。不过还是很快的，入库20000多条数据耗时不到1秒。</p>
+<h3 id="生成字符串矩阵信息"><a href="#生成字符串矩阵信息" class="headerlink" title="生成字符串矩阵信息"></a>生成字符串矩阵信息</h3><p>这个是数据库加密的核心。具体做如下图所示：<br><img src="/images/blog/20151107/matrix.png" alt=""><br>对应的代码为：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * @description 返回字符串的信息矩阵</div><div class="line"> * @param  &#123;string&#125; str</div><div class="line"> * @return &#123;object&#125;</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateStrMatrix</span>(<span class="params">str, hasHead, hasTail</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> matrix = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">260</span>);</div><div class="line">    <span class="keyword">var</span> strUnicodeParis = [];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">260</span>; i++) &#123;</div><div class="line">        matrix[i] = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">256</span>);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">256</span>; j++) &#123;</div><div class="line">            matrix[i][j] = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;<span class="comment">// 初始化信息矩阵</span></div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; str.length; i++) &#123;</div><div class="line">        strUnicodeParis.push(convertChineseUnicode([str[i]]));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; strUnicodeParis.length - <span class="number">1</span>; i++) &#123;</div><div class="line">        <span class="keyword">var</span> a1 = strUnicodeParis[i][<span class="number">0</span>];</div><div class="line">        <span class="keyword">var</span> a2 = strUnicodeParis[i][<span class="number">1</span>];</div><div class="line">        <span class="keyword">var</span> b1 = strUnicodeParis[i + <span class="number">1</span>][<span class="number">0</span>];</div><div class="line">        <span class="keyword">var</span> b2 = strUnicodeParis[i + <span class="number">1</span>][<span class="number">1</span>];</div><div class="line"></div><div class="line">        matrix[a1][a2] = <span class="number">1</span>;</div><div class="line">        matrix[a1][b1] = <span class="number">1</span>;</div><div class="line">        matrix[a1][b2] = <span class="number">1</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            matrix[a2][b1] = <span class="number">1</span>;</div><div class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">            <span class="built_in">console</span>.log(str);</div><div class="line">            <span class="keyword">throw</span> e;</div><div class="line">        &#125;</div><div class="line">        matrix[a2][b2] = <span class="number">1</span>;</div><div class="line">        matrix[b1][b2] = <span class="number">1</span>;</div><div class="line"></div><div class="line">    &#125; <span class="comment">// 填入邻接关系</span></div><div class="line">    <span class="keyword">if</span> (hasHead) &#123;</div><div class="line">        matrix[<span class="number">256</span>][strUnicodeParis[<span class="number">0</span>][<span class="number">0</span>]] = <span class="number">1</span>; <span class="comment">// 头字节信息</span></div><div class="line">        matrix[<span class="number">258</span>][strUnicodeParis[<span class="number">0</span>][<span class="number">1</span>]] = <span class="number">1</span>; <span class="comment">// 第二个字节信息</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (hasTail) &#123;</div><div class="line">        matrix[<span class="number">257</span>][strUnicodeParis[strUnicodeParis.length - <span class="number">1</span>][<span class="number">1</span>]] = <span class="number">1</span>; <span class="comment">// 尾字节信息</span></div><div class="line">        matrix[<span class="number">259</span>][strUnicodeParis[strUnicodeParis.length - <span class="number">1</span>][<span class="number">0</span>]] = <span class="number">1</span>; <span class="comment">// 倒数第二个字节信息</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> matrix;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="确定索引比特串的长度"><a href="#确定索引比特串的长度" class="headerlink" title="确定索引比特串的长度"></a>确定索引比特串的长度</h3><p>经查询相关文献发现，当m,k,n满足<code>M = k * n / ln2</code>时，误称率就最低。（k为哈希函数的个数，n为矩阵中1的平均个数，m为压缩比特串的长度）</p>
+<p>通过对数据库所有数据进行统计分析得到，n收敛与<code>228</code>。根据<code>m = n * k / ln2</code>，<code>k = 10</code>, <code>n = 228</code>,计算得到m大约为<code>3304</code>，因为m最好为<strong>素数</strong>，经查询素数表得到m为<code>3307</code>。</p>
+<h3 id="生成比特串"><a href="#生成比特串" class="headerlink" title="生成比特串"></a>生成比特串</h3><p>根据比特串生成算法生成比特串，相应的代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * @description 生成长度为m bit的序列</div><div class="line"> * @param  &#123;object&#125; matrix 字符串信息矩阵</div><div class="line"> * @param  &#123;number&#125; m      生成比特串的长度</div><div class="line"> * @param  &#123;number&#125; k      哈希函数的个数</div><div class="line"> * @return &#123;string&#125;        返回生成的M序列</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">string_transfer</span>(<span class="params">matrix, m, k</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> V = <span class="keyword">new</span> <span class="built_in">Array</span>(m);</div><div class="line">    <span class="keyword">var</span> a = matrix.length;</div><div class="line">    <span class="keyword">var</span> b = matrix[<span class="number">0</span>].length;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; V.length; i++) &#123;</div><div class="line">        V[i] = <span class="number">0</span>;<span class="comment">//初始化</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a; i++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; b; j++) &#123;</div><div class="line">            <span class="keyword">if</span> (matrix[i][j] == <span class="number">1</span>) &#123;</div><div class="line">                <span class="keyword">var</span> flag = <span class="keyword">new</span> <span class="built_in">Array</span>(m);</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> p = <span class="number">0</span>; p &lt; flag.length; p++) &#123;</div><div class="line">                    flag[p] = <span class="literal">false</span>;<span class="comment">//防冲突用的标志位初始化</span></div><div class="line">                &#125;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> d = <span class="number">0</span>; d &lt; k; d++) &#123;<span class="comment">//给比特串的特定位置置 1,共置 k 次</span></div><div class="line">                    <span class="keyword">var</span> index = hash(((i - <span class="number">1</span>) * b + j - <span class="number">1</span>) + <span class="string">""</span>, d) % m + <span class="number">1</span>;</div><div class="line">                    <span class="keyword">while</span> (flag[index] == <span class="literal">true</span>) index++;</div><div class="line">                    <span class="keyword">if</span> (index &lt; m) &#123; <span class="comment">//防止越界！！！！fuck it</span></div><div class="line">                        V[index] = <span class="number">1</span>;</div><div class="line">                        flag[index] = <span class="literal">true</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> V;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="存储比特串"><a href="#存储比特串" class="headerlink" title="存储比特串"></a>存储比特串</h3><p>因为索引的长度为3307位，为了接下来方便进行位于操作，我们将索引补全为3328位，以64位为一组进行分段，将每段作为一个数据库字段，以bigint（8字节，64位）的形式进行存储。</p>
+<h3 id="将普通SQL语句转换为加密查询语句"><a href="#将普通SQL语句转换为加密查询语句" class="headerlink" title="将普通SQL语句转换为加密查询语句"></a>将普通SQL语句转换为加密查询语句</h3><p>对于%s,去掉信息矩阵的头信息（倒数第一个字符和倒数第二个字符），然后再生成比特串<code>v</code>， 相应的<code>sql</code>语句<code>select * from novel where text like &quot;%s&quot;</code> 转换为<code>select * from novel where v &amp; index = v</code>， 其中index为索引所在的字段名，真实情况中可能index被分成了很多份，所以真实的<code>sql</code>语句可能为<code>select * from novel where v1 &amp; index1 = v1 and v2 &amp; index2 = v2 and v3 &amp; index3 = v3 &amp; ..</code>。</p>
+<p>对于%s%，首尾信息均要（默认），<code>sql</code>语句可参考%s的情况。</p>
+<p>对于s%，去掉尾信息（第一个和第二个字符），<code>sql</code>语句可参考%s的情况。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>项目地址为<a href="https://github.com/Natumsol/db_homework.git" target="_blank" rel="external">数据库加密</a>，代码里面有详细的注释。</p>
+<p>测试结果如下图：<br><img src="/images/blog/20151107/db_cryption.png" alt="DEMO"><br>可以看出，直接密文查询，性能还是很好的嘛～～哈哈。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>通过这次实验，让我领悟到<code>deadline是第一生产力</code>原来是很有道理的嘛~</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2015/11/11/loading-script/" data-toggle="tooltip" data-placement="top" title="图解script的三种加载方式">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2015/11/05/css-triangle-generator/" data-toggle="tooltip" data-placement="top" title="css三角形生成器">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#NodeJs" title="NodeJs">NodeJs</a>
+                        
+                          <a class="tag" href="/tags/#Mysql" title="Mysql">Mysql</a>
+                        
+                          <a class="tag" href="/tags/#数据库加密" title="数据库加密">数据库加密</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Natumsol";
+    var disqus_identifier = "http://natumsol.github.io/2015/11/07/db-encryption/";
+    var disqus_url = "http://natumsol.github.io/2015/11/07/db-encryption/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/whutqinglan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/natumsol">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Natumsol 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://natumsol.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://natumsol.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
