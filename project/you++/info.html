@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/logo.png">
+    <title>you++</title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/info.css">
+</head>
+
+<body class="my-body">
+    <nav class="navbar my-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand my-navbar-brand" href="#">you++</a>
+                <a class="navbar-brand teacher-version" href="#">老师版</a>
+            </div>
+        </div>
+    </nav>
+    <div class="banner">
+        <ul class="banner-info">
+            <li class="my-font-very-large">你的精彩，不可替代</li>
+            <li class="divider my-divider"></li>
+            <li class="my-font-normal">比别人多一点努力，你就会多一份收获！</li>
+            <li class="divider my-divider"></li>
+            <li class="my-font-small">TIME IS SMALL, DREAMS ARE BIG!</li>
+            <li class="my-font-small text-scan">扫一扫，下载教师端</li>
+        </ul>
+    </div>
+    <div class="container main">
+        <div class="main-step">    
+            <img src="img/step1.png" alt="step1" id="step-img">
+            <div class="step-text">
+                <span class="step1-text my-text-blue">基本信息</span>
+                <span class="step2-text">教学背景</span>
+                <span class="step3-text">下载APP</span>
+            </div>
+        </div>
+        <div id="step1" class="main-form">
+            <div class="form-group">
+                <label for="name" class="form-lable">姓名</label>
+                <input type="text" class="form-control input-text" id="name">
+            </div>
+            <div class="form-group">
+                <label for="sex" class="form-lable">性别</label>
+                <label class="radio-inline"><input type="radio" name="sex" value="0" checked><span>男</span></label>
+                <label class="radio-inline"><input type="radio" name="sex" value="1"><span>女</span></label>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="form-lable">手机号码</label>
+                <input type="text" class="form-control input-text" id="phone">
+            </div>
+            <div class="form-group">
+                <label for="verifycode" class="form-lable form-verify">验证码</label>
+                <div class="input-group input-text">
+                   <input type="text" class="form-control" id="verifycode">
+                   <span class="input-group-btn">
+                      <button class="btn btn-primary" type="button" id="btn-getcode">
+                         获取验证码
+                      </button>
+                   </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="identity" class="form-lable">身份</label>
+                <select class="selectpicker" data-width="350px" id="identity">
+                    <option value="0">全职教师</option>
+                    <option value="1">兼职大学生</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email" class="form-lable">邮箱</label>
+                <input type="text" class="form-control input-text" id="email">
+            </div>
+            <input type="hidden" value="1" name="step">
+            <input type="submit" class="btn btn-lg btn-primary btn-next" value="下一步" id="step1-submit">
+        </div>
+        <div id="step2-type1" class="main-form not-visible">
+            <div class="form-group">
+                <label for="school-type" class="form-lable">学校类别</label>
+                <input type="text" class="form-control input-text" id="school-type">
+            </div>
+            <div class="form-group">
+                <label for="school-name" class="form-lable">学校名称</label>
+                <input type="text" class="form-control input-text" id="school-name">
+            </div>
+            <div class="form-group form-error not-visible" id="school-name-error">
+                <label for="school-name－error" class="form-lable"></label>
+                <span class="form-control-static input-text my-text-red">请填写学校名称</span>
+            </div>
+            <div class="form-group">
+                <label for="teacher-title" class="form-lable">职称</label>
+                <select class="selectpicker" data-width="350px" id="teacher-title">
+                    <option value="0">无</option>
+                    <option value="1">普通教师</option>
+                    <option value="2">中级教师</option>
+                    <option value="3">高级教师</option>
+                    <option value="4">特级教师</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="teach-age" class="form-lable">教龄</label>
+                <select class="selectpicker" data-width="350px" id="teach-age">
+                    <option value="0">无</option>
+                    <option value="1">一年</option>
+                    <option value="2">两年</option>
+                    <option value="3">三年</option>
+                    <option value="4">三年以上</option>
+                    <option value="5">五年以上</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="highest-education" class="form-lable">最高学历</label>
+                <select class="selectpicker" data-width="350px" id="highest-education">
+                    <option value="0">专科</option>
+                    <option value="1">本科</option>
+                    <option value="2">硕士</option>
+                    <option value="3">博士</option>
+                    <option value="4">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="graduate-school" class="form-lable">毕业院校</label>
+                <input type="text" class="form-control input-text" id="graduate-school">
+            </div>
+            <div class="form-group">
+                <label for="graduate-major" class="form-lable">专业</label>
+                <input type="text" class="form-control input-text" id="graduate-major">
+            </div>
+            <div class="form-group">
+                <label for="licence" class="form-lable"></label>
+                <label class="checkbox-inline"><input type="checkbox" id="licence" checked><span>我已阅读并同意相关服务条款和隐私政策</span></label>
+            </div>
+            <input type="submit" class="btn btn-lg btn-primary btn-next" value="完成注册" id="step2-submit">
+        </div>
+        <div id="step2-type2" class="main-form not-visible">
+            <div class="form-group">
+                <label for="at-school-name" class="form-lable">在读院校</label>
+                <input type="text" class="form-control input-text" id="at-school-name">
+            </div>
+            <div class="form-group">
+                <label for="at-school-major" class="form-lable">专业</label>
+                <input type="text" class="form-control input-text" id="at-school-major">
+            </div>
+            <div class="form-group">
+                <label for="teach-age" class="form-lable">教龄</label>
+                <select class="selectpicker" data-width="350px">
+                    <option value="0">无</option>
+                    <option value="1">一年</option>
+                    <option value="2">两年</option>
+                    <option value="3">三年</option>
+                    <option value="4">三年以上</option>
+                    <option value="5">五年以上</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="highest-education" class="form-lable">最高学历</label>
+                <select class="selectpicker" data-width="350px">
+                    <option value="0">专科</option>
+                    <option value="1">本科</option>
+                    <option value="2">硕士</option>
+                    <option value="3">博士</option>
+                    <option value="4">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="licence" class="form-lable"></label>
+                <label class="checkbox-inline"><input type="checkbox" id="licence" checked><span>我已阅读并同意相关服务条款和隐私政策</span></label>
+            </div>
+            <input type="submit" class="btn btn-lg btn-primary btn-next" value="完成注册" id="step2-submit">
+        </div>
+        <div id="step3" class="main-form not-visible">
+            <p class="step3-text-short my-font-large">恭喜您成功注册为you+教师<br>
+                <span class="my-font-normal">您可以：</span>
+            </p>
+            <div class="img-download">
+                <a href="" target="_blank"><img id="iphone-dl" src="img/iphone-download.png"></a>
+                <a href="" target="_blank"><img id="android-dl" src="img/android-download.png"></a>
+                <img src="img/qcode.png">
+            </div>
+            <p class="my-font-normal my-text-blue">扫描二维码，下载APP</p>
+            <p class="step3-text-long my-font-normal">
+                为了教学安全，您需要身份验证以获得家教聘请。您可以在手机客户端内进行身份验证，
+                或者在这里上传您的身份信息图片<br>
+                <span class="my-text-blue">X X家教会妥善安全的保管用户个人信息，维护个人隐私权利</span>
+            </p>
+            <div class="identity-sample row">
+                <div class="col-md-4">
+                    <img src="" alt="sample-img">
+                    <p class="sample-text">参考示例</p>
+                </div>
+                <div class="col-md-8">
+                    <p class="info-text">
+                        1.免冠，建议素颜照片，保证五官清晰可见<br>
+                        2.照片放大后，证件上的文字信息与证件号清晰可见<br>
+                        3.手持证件拍照，不要遮挡证件上的任何信息<br>
+                        4.大小不要超过4M
+                    </p>
+                </div>
+            </div>
+            <div class="main-form">
+                <div class="form-group">
+                    <label for="identity-name" class="form-lable">姓名</label>
+                    <input type="text" class="form-control input-text" id="identity-name">
+                </div>
+                <div class="form-group">
+                    <label for="identity-code" class="form-lable">身份证号码</label>
+                    <input type="text" class="form-control input-text" id="identity-code">
+                </div>
+                <div class="form-group">
+                    <label for="identity-photo" class="form-lable">上传照片</label>
+                    <input type="button" class="btn btn-default" value="上传照片" id="identity-photo">
+                    <img src="" alt="photo" class="img-identity not-visible">
+                </div>
+                <div class="form-group not-visible">
+                    <label for="licence" class="form-lable"></label>
+                    <label class="checkbox-inline"><input type="checkbox" id="licence" checked><span>我已阅读并同意相关服务条款和隐私政策</span></label>
+                </div>
+                <input type="submit" class="btn btn-lg btn-primary btn-next not-visible" value="提交申请" id="step3-submit">
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>上海东方国际影视文化有限公司 版权所有</p>
+        <p>Copyright @ 2015 Orient Soft All Rights Reserved.</p>
+    </footer>
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="js/info.js"></script>
+</body>
+
+</html>

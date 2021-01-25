@@ -1,0 +1,234 @@
+.navbar {
+    background-color: #FFFFFF;
+}
+
+.my-iframe {
+    border: 0;
+    width: 100%;
+}
+
+.vertical .carousel-inner {
+    height: 100%;
+}
+
+#myCarousel > .carousel-indicators {
+    position: fixed;
+    top: 50%;
+    left: 97%;
+    width: auto;
+    margin-left: 0;
+    bottom: 0;
+    margin-bottom: 0;
+}
+
+#myCarousel > .carousel-indicators > li {
+    display: block;
+}
+
+#myCarousel.vertical > .carousel-inner > .item {
+    -webkit-transition: 0.6s ease-in-out top;
+    -moz-transition: 0.6s ease-in-out top;
+    -ms-transition: 0.6s ease-in-out top;
+    -o-transition: 0.6s ease-in-out top;
+    transition: 0.6s ease-in-out top;
+}
+
+#myCarousel.vertical > .carousel-inner > .active {
+    top: 0;
+}
+
+#myCarousel.vertical > .carousel-inner > .next {
+    top: 100%;
+}
+
+#myCarousel.vertical > .carousel-inner > .prev {
+    top: -100%;
+}
+
+#myCarousel.vertical > .carousel-inner > .next.left,
+#myCarousel.vertical > .carousel-inner > .prev.right {
+    top: 0;
+}
+
+#myCarousel.vertical > .carousel-inner > .active.left {
+    top: -100%;
+}
+
+#myCarousel.vertical > .carousel-inner > .active.right {
+    top: 100%;
+}
+
+#myCarousel.vertical > .carousel-inner > .item {
+    left: 0;
+}
+
+ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹.my-container {
+    margin-top: 80px;
+}
+
+.my-navbar-brand {
+    color: #000000;
+    font-size: 36px;
+}
+
+.to-be-teacher {
+    border-width: 1px;
+    border-color: #337ab7;
+    font-size: 14px;
+    padding: 2px;
+    height: 28px;
+    margin-top: 16px;
+    margin-left: 60px !important;
+}
+
+.navbar-header > a:hover {
+    color: #FFFFFF;
+    background-color: #337ab7;
+}
+
+#navbar a {
+    color: #000000;
+}
+
+.right,
+.left {
+    background-image: none !important;
+}
+
+.my-img {
+    height: 300px;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.my-img > img {
+    height: 300px;
+}
+
+#carousel-example-generic > .carousel-inner > .item {
+    height: 500px;
+}
+
+.my-caption {
+    height: 150px;
+    text-align: center;
+}
+
+.my-caption .my-title {
+    font-size: 42px;
+}
+
+.my-caption .my-content {
+    font-size: 20px;
+}
+
+.my-introduce {
+    text-align: center;
+    font-size: 16px;
+}
+
+.my-font-small {
+    font-size: 14px;
+}
+
+.my-font-big {
+    font-size: 24px;
+    margin: 30px 0;
+    font-weight: 500;
+}
+
+.my-space {
+    margin: 30px;
+}
+
+.my-func {
+    height: 400px;
+    text-align: center;
+}
+
+.my-func500 {
+    height: 500px;
+    text-align: center;
+    margin-left: -180px;
+    margin-top: -50px;
+}
+
+.my-row-500 {
+    height: 500px;
+    padding-top: 50px;
+}
+
+.my-func > p {
+    margin: 40px 0;
+}
+
+.my-func-content-big {
+    font-size: 48px;
+}
+
+.my-func-content-small {
+    font-size: 28px;
+}
+
+.my-func1 {
+    padding-top: 70px;
+}
+
+.my-func2 {
+    padding-top: 80px;
+}
+
+.my-left {
+    text-align: left;
+}
+
+.my-right {
+    text-align: right;
+}
+
+.my-download-content {
+    text-align: center;
+    font-size: 48px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.my-download-img img {
+    height: 200px;
+    width: 200px;
+}
+
+.my-photo {
+    text-align: center;
+}
+
+.my-photo img {
+    height: 150px;
+    width: 150px;
+    margin: 20px auto;
+}
+
+.my-map {
+    height: 360px;
+    width: 360px;
+    background-color: grey;
+    margin: 0 auto;
+}
+
+.my-link {
+    font-size: 18px;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.my-qcode {
+    height: 150px;
+    width: 150px;
+    background-color: grey;
+    margin-left: -15px;
+}
+
+.my-bottom {
+    text-align: center;
+    margin-top: 80px;
+}

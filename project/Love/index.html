@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>Our Love Story</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+		@font-face {
+			font-family: digit;
+			src: url('digital-7_mono.ttf') format("truetype");
+		}
+	</style>
+<link href="css/default_dev.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/garden_dev.js"></script>
+<script type="text/javascript" src="js/functions_dev.js"></script>
+</head>
+
+<body>
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=27583241&auto=1&height=32"></iframe>
+	<div id="mainDiv">
+		<div id="content">
+			<div id="code">
+				<p>2016年1月23日，我们恋爱了</p>	
+				<p>时间过得真快</p>
+				<p>回首这一年，记忆中哪些美好的记忆又变得鲜活了起来</p>
+				<p>情不知所起，一往而深</p>
+				<p>一起爬过庐山的峭壁</p>
+				<p>数过三叠泉的阶梯</p>
+				<p>看过云海，吃过石鱼</p>
+				<p>东湖的小路上还残留我们的身影</p>
+				<p>长江大桥上还回荡着我们的誓言</p>
+				<p>嘴角边似乎还残留着生日蛋糕的奶油味</p>
+				<p>当然，还有你唇彩的清香</p>
+				<p>想大声对你说声：今晚月色很美</p>
+				<p>我猜夏目漱石肯定在哪里偷乐</p>
+				<p>每当想起你的脸</p>
+				<p>我眼角的鱼尾纹便不听话的出来了</p>
+				<p>可我才14岁，混蛋啊</p>
+				<p>我想，这就是爱情吧</p>
+				<p>不管你在哪里，我都在这里等你</p>
+				<p>宝贝，</p><p>
+				<p>陌上花开，可缓缓归矣~</p>
+			</div>
+			<div id="loveHeart">
+				<canvas id="garden"></canvas>
+				<div id="words">
+					<div id="messages">
+						小草, 我们已经相爱
+						<div id="elapseClock"></div>
+					</div>
+					<div id="loveu">
+						爱你到永远。<br/>
+						<div class="signature">--小和尚</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var offsetX = $("#loveHeart").width() / 2;
+		var offsetY = $("#loveHeart").height() / 2 - 55;
+		var together = new Date();
+		together.setFullYear(2016, 0, 23);
+		together.setHours(22);
+		together.setMinutes(33);
+		together.setSeconds(0);
+		together.setMilliseconds(0);
+
+		if (!document.createElement('canvas').getContext) {
+			var msg = document.createElement("div");
+			msg.id = "errorMsg";
+			msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
+			document.body.appendChild(msg);
+			$("#code").css("display", "none")
+			$("#copyright").css("position", "absolute");
+			$("#copyright").css("bottom", "10px");
+			document.execCommand("stop");
+		} else {
+			setTimeout(function () {
+				startHeartAnimation();
+			}, 2000);
+
+			timeElapse(together);
+			setInterval(function () {
+				timeElapse(together);
+			}, 700);
+
+			adjustCodePosition();
+			$("#code").typewriter();
+		}
+	</script>
+</body>
+
+</html>
