@@ -1,2 +1,3 @@
 User-agent: *
 Disallow:
+Sitemap: https://natumsol.github.io/sitemap.xml
