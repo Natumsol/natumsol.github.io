@@ -15,4 +15,66 @@
         analyticsScript.src = 'https://hm.baidu.com/hm.js?369f843347d2f0ba6d2d8385924d4c31';
         analyticsScript.async = true;
         document.head.appendChild(analyticsScript);
-      </script></body></html><script type="module">var e=document.querySelector(`.search-form`),t=document.querySelector(`#search-query`),n=document.querySelector(`.search-status`),r=document.querySelector(`.search-results`),i;function a(e,t){if(r&&n){if(r.replaceChildren(),!t){n.textContent=`输入关键词以搜索公开文章。`;return}n.textContent=`找到 ${e.length} 篇与「${t}」相关的文章。`;for(let t of e){let e=document.createElement(`li`),n=document.createElement(`a`),i=document.createElement(`p`);n.href=t.url,n.textContent=t.title,i.textContent=t.description,e.append(n,i),r.append(e)}}}async function o(e){let t=e.trim().toLocaleLowerCase(`zh-CN`);if(!t){a([],``);return}if(!i){let e=await fetch(`/search-index.json`);if(!e.ok)throw Error(`Unable to load search index`);i=await e.json()}let n=t.split(/\s+/);a(i.filter(e=>{let t=`${e.title} ${e.description} ${e.content}`.toLocaleLowerCase(`zh-CN`);return n.every(e=>t.includes(e))}),e.trim())}var s=new URLSearchParams(window.location.search).get(`q`)??``;t&&(t.value=s),o(s).catch(()=>{n&&(n.textContent=`搜索暂时不可用，请稍后再试。`)}),e?.addEventListener(`submit`,e=>{e.preventDefault();let r=t?.value??``,i=new URL(window.location.href);r.trim()?i.searchParams.set(`q`,r.trim()):i.searchParams.delete(`q`),window.history.replaceState({},``,i),o(r).catch(()=>{n&&(n.textContent=`搜索暂时不可用，请稍后再试。`)})});</script>
+      </script></body></html><script data-astro-rerun>
+  const form = document.querySelector('.search-form');
+  const input = document.querySelector('#search-query');
+  const status = document.querySelector('.search-status');
+  const results = document.querySelector('.search-results');
+  let index;
+
+  function render(entries, query) {
+    if (!results || !status) return;
+    results.replaceChildren();
+    if (!query) {
+      status.textContent = '输入关键词以搜索公开文章。';
+      return;
+    }
+    status.textContent = `找到 ${entries.length} 篇与「${query}」相关的文章。`;
+    for (const entry of entries) {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      const summary = document.createElement('p');
+      link.href = entry.url;
+      link.textContent = entry.title;
+      summary.textContent = entry.description;
+      item.append(link, summary);
+      results.append(item);
+    }
+  }
+
+  async function search(query) {
+    const normalized = query.trim().toLocaleLowerCase('zh-CN');
+    if (!normalized) {
+      render([], '');
+      return;
+    }
+    if (!index) {
+      const response = await fetch('/search-index.json');
+      if (!response.ok) throw new Error('Unable to load search index');
+      index = await response.json();
+    }
+    const terms = normalized.split(/\s+/);
+    const matches = index.filter((entry) => {
+      const searchable = `${entry.title} ${entry.description} ${entry.content}`.toLocaleLowerCase('zh-CN');
+      return terms.every((term) => searchable.includes(term));
+    });
+    render(matches, query.trim());
+  }
+
+  const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';
+  if (input) input.value = initialQuery;
+  search(initialQuery).catch(() => {
+    if (status) status.textContent = '搜索暂时不可用，请稍后再试。';
+  });
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = input?.value ?? '';
+    const url = new URL(window.location.href);
+    query.trim() ? url.searchParams.set('q', query.trim()) : url.searchParams.delete('q');
+    window.history.replaceState({}, '', url);
+    search(query).catch(() => {
+      if (status) status.textContent = '搜索暂时不可用，请稍后再试。';
+    });
+  });
+</script>
